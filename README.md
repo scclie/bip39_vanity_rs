@@ -14,9 +14,11 @@ Each seed phrase always produces the same address. Which path depends on the coi
 | EVM   | `m/44'/60'/0'/0/0` (BIP44) |
 | DOGE  | `m/44'/3'/0'/0/0`  (BIP44) |
 
-The `/0` at the end is the address index — always the first one your wallet shows after you import the seed phrase.
+The `/0` at the end is the address index - always the first one your wallet shows after you import the seed phrase.
 
 Want to check? Generate a phrase with the tool, import it into Cake Wallet, MetaMask, or whatever, and compare the first address.
+
+You can also verify manually on [iancoleman.io/bip39](https://iancoleman.io/bip39/) - paste the seed phrase, pick the right coin and derivation path from the table above, and check the first address.
 
 *Some wallets generate extra addresses (change addresses, other accounts), but index 0 is the first one.*
 
@@ -26,7 +28,7 @@ Want to check? Generate a phrase with the tool, import it into Cake Wallet, Meta
 cargo build --release
 ```
 
-Only Linux builds in releases.
+Only Linux builds in [releases](https://github.com/scclie/bip39_vanity_rs/releases).
 
 ## Usage
 
@@ -90,10 +92,10 @@ Estimated time = `alphabet^n / keys_per_second`.
 | 5      | ~ 9 h        | ~ 18 min | ~ 8 days  |
 | 6      | ~ 12 days    | ~ 5 h    | ~ 1.3 yr  |
 | 7      | ~ 1 yr       | ~ 3 days | ~ 74 yr   |
-| 8      | ~ 34 yr      | ~ 50 days| —         |
+| 8      | ~ 34 yr      | ~ 50 days| -         |
 
 *At 1000 key/s.*  
-At ~3000 key/s divide times by 3.  
+At ~5000 key/s divide times by 5.  
 Multiple patterns scale too.
 
 ## Trust
@@ -116,8 +118,8 @@ cargo test --release
 ```
 
 Tests are in `tests/vectors.rs`:
-- `test_known_seeds` — checks the test vectors below match
-- `test_random_address_validity` — generates addresses from 4 known BIP39 seeds and checks format
+- `test_known_seeds` - checks the test vectors below match
+- `test_random_address_validity` - generates addresses from 4 known BIP39 seeds and checks format
 
 ## Test Vectors
 
@@ -125,7 +127,7 @@ These addresses end with `aa`. Verify with `-s`:
 
 ```sh
 bip39_vanity_rs -s "bench mother night siren defense strong mass damp liar document need yellow" -c btc
-bip39_vanity_rs -s "prize filter arch flee off hope banner unique tired intact wink ill" -c ltc
+bip39_vanity_rs -s "forest pill dash grab patrol cousin chef mutual scheme find doll accuse" -c ltc
 bip39_vanity_rs -s "loud home much usage knee metal glad effort jelly spread ensure found" -c evm
 bip39_vanity_rs -s "wedding purity worry true mind balcony walnut soda weapon siege pull smoke" -c doge
 ```
@@ -133,7 +135,7 @@ bip39_vanity_rs -s "wedding purity worry true mind balcony walnut soda weapon si
 | Coin | Seed phrase | Address |
 |------|-------------|---------|
 | BTC | `bench mother night siren defense strong mass damp liar document need yellow` | `bc1qrxpte9ezjgxadahhq5qhvrt3dt7v5h7t3wuyaa` |
-| LTC | `prize filter arch flee off hope banner unique tired intact wink ill` | `ltc1qkv8zmwq3era56csh7p5slhlvv2k9a6xy0qpmaa` |
+| LTC | `forest pill dash grab patrol cousin chef mutual scheme find doll accuse` | `ltc1q6xaf4mfnfs4xqupg0ucyj77qnz3cu6ssjqpfaa` |
 | EVM | `loud home much usage knee metal glad effort jelly spread ensure found` | `0x8d18752d37220e44b340b0a1829c37490f2599aa` |
 | DOGE | `wedding purity worry true mind balcony walnut soda weapon siege pull smoke` | `DMN4WHysscnYZAUhwF6K4aTApBKBy256Aa` |
 

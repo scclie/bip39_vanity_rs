@@ -77,8 +77,9 @@ fn main() {
 
     for p in &patterns_lower {
         if let Err(bad) = wallet.validate_pattern(p) {
-            eprintln!("Warning: pattern \"{p}\" contains characters never valid for {}: {:?}",
+            eprintln!("Error: pattern \"{p}\" contains characters that can never appear in {} address: {:?}",
                 wallet.name(), bad.iter().collect::<String>());
+            return;
         }
     }
 

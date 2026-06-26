@@ -9,3 +9,6 @@ bitcoin = { version = "0.32", features = ["rand", "base64"] }
 rand = "0.8"
 tiny-keccak = { version = "2", features = ["keccak"] }
 bech32 = { version = "0.11", features = ["alloc"] }
+
+[dev-dependencies]
+hex = "0.4"

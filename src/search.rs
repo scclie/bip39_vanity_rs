@@ -51,7 +51,7 @@ pub fn run(
                 if prev % 500 == 0 {
                     let elapsed = start.elapsed().as_secs_f64();
                     let rate = (prev as f64) / elapsed;
-                    eprint!("\r[{:.0} key/s][total {}] {}  ", rate, prev, addr);
+                    eprint!("\r[{:.0} key/s][total {}]  ", rate, prev);
                 }
 
                 let addr_lower = addr.to_lowercase();
