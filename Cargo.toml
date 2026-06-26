@@ -1,0 +1,11 @@
+[package]
+name = "bip39_vanity_rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bip39 = { version = "2", features = ["rand"] }
+bitcoin = { version = "0.32", features = ["rand", "base64"] }
+rand = "0.8"
+tiny-keccak = { version = "2", features = ["keccak"] }
+bech32 = { version = "0.11", features = ["alloc"] }
