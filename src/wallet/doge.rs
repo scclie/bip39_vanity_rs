@@ -38,6 +38,8 @@ impl Wallet for Doge {
         "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     }
 
+    fn address_prefix(&self) -> &str { "d" }
+
     fn verify_address(&self, address: &str) -> bool {
         verify_base58check(address)
     }

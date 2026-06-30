@@ -7,10 +7,41 @@ use rand::RngCore;
 
 use crate::wallet::Wallet;
 
+pub fn wildcard_match(addr: &str, pattern: &str) -> bool {
+    let segments: Vec<&str> = pattern.split('*').collect();
+
+    if segments.len() == 1 {
+        return addr.contains(pattern);
+    }
+
+    let non_empty: Vec<&str> = segments.iter().filter(|s| !s.is_empty()).copied().collect();
+
+    if non_empty.is_empty() {
+        return true;
+    }
+
+    if !pattern.starts_with('*') && !addr.starts_with(non_empty[0]) {
+        return false;
+    }
+
+    if !pattern.ends_with('*') && !addr.ends_with(non_empty[non_empty.len() - 1]) {
+        return false;
+    }
+
+    let mut search_pos = 0;
+    for &seg in &non_empty {
+        match addr[search_pos..].find(seg) {
+            Some(idx) => search_pos += idx + seg.len(),
+            None => return false,
+        }
+    }
+
+    true
+}
+
 pub fn run(
     wallet: Arc<dyn Wallet>,
     patterns: &[String],
-    mode: &str,
     count_target: usize,
     num_threads: usize,
 ) {
@@ -23,17 +54,11 @@ pub fn run(
     for _ in 0..num_threads {
         let wallet = wallet.clone();
         let patterns = patterns.to_vec();
-        let mode = mode.to_string();
         let found_count = found_count.clone();
         let total_keys = total_keys.clone();
 
         handles.push(std::thread::spawn(move || {
             let mut entropy = [0u8; 16];
-            let check: fn(&str, &str) -> bool = match mode.to_lowercase().as_str() {
-                "prefix" | "p" => |a, p| a.starts_with(p),
-                "anywhere" | "a" | "any" => |a, p| a.contains(p),
-                _ => |a, p| a.ends_with(p),
-            };
 
             loop {
                 if found_count.load(Ordering::Relaxed) >= count_target as u64 {
@@ -56,7 +81,7 @@ pub fn run(
 
                 let addr_lower = addr.to_lowercase();
                 for p in &patterns {
-                    if check(&addr_lower, p) {
+                    if wildcard_match(&addr_lower, p) {
                         let n = found_count.fetch_add(1, Ordering::Relaxed);
                         if n < count_target as u64 {
                             println!("\nMatch #{} found!", n + 1);

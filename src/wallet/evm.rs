@@ -31,6 +31,7 @@ impl Wallet for Evm {
     }
 
     fn valid_chars(&self) -> &str { "0x0123456789abcdef" }
+    fn address_prefix(&self) -> &str { "0x" }
 
     fn verify_address(&self, address: &str) -> bool {
         let addr = address.strip_prefix("0x").unwrap_or(address);
